@@ -3,6 +3,7 @@ package com.vova.bestappever.screens.applications.created
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,7 +30,6 @@ import com.vova.bestappever.screens.applications.views.ApplicationsListView
 @Composable
 fun NotAcceptedAppsScreen(
     state: ApplicationsState,
-    onAppCanceled: (app: Application) -> Unit,
     onAppAccepted: (app: Application) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -50,10 +50,6 @@ fun NotAcceptedAppsScreen(
         CheckNotAcceptedApplicationDialog(
             app = app,
             onDismissRequest = { appIndexForDisplayDialog = -1 },
-            onAppCanceled = {
-                appIndexForDisplayDialog = -1
-                onAppCanceled(app)
-            },
             onAppAccepted = {
                 appIndexForDisplayDialog = -1
                 onAppAccepted(app)
@@ -67,7 +63,6 @@ fun NotAcceptedAppsScreen(
 private fun CheckNotAcceptedApplicationDialog(
     app: Application,
     onDismissRequest: () -> Unit,
-    onAppCanceled: () -> Unit,
     onAppAccepted: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -81,16 +76,11 @@ private fun CheckNotAcceptedApplicationDialog(
             Column(
                 modifier = Modifier.padding(12.dp, 0.dp)
             ) {
-                ApplicationCard(app = app)
+                ApplicationCard(app = app, modifier = Modifier.fillMaxHeight().weight(1f))
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    OutlinedButton(
-                        onClick = onAppCanceled,
-                    ) {
-                        Text(text = "Отменить заявку")
-                    }
                     Button(
                         onClick = onAppAccepted,
                     ) {

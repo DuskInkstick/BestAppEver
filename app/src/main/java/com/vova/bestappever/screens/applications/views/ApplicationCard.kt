@@ -64,7 +64,7 @@ fun ApplicationCard(
                 Column(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextWithLabel(text = app.dateOfCompletion, label = "Выполнить до")
+                    TextWithLabel(text = app.dateOfCompletion ?: "-", label = "Выполнить до")
                     Spacer(modifier = Modifier.padding(8.dp))
 
                     TextWithLabel(text = app.typeOfRepairWork.jsonValue, label = "Вид  работ")
@@ -98,5 +98,5 @@ fun ApplicationCard(
 @PhonePreview
 @Composable
 private fun Preview() {
-    ApplicationCard(app = ApplicationRepository().getAll()[0])
+
 }

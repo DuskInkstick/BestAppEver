@@ -60,7 +60,7 @@ fun ApplicationBriefCard(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TextWithLabel(
-                        text = app.dateOfCompletion,
+                        text = app.dateOfCompletion ?: "-",
                         label = "Выполнить до",
                         fontSize = 18.sp,
                         style = LocalTextStyle.current.copy(
@@ -81,7 +81,7 @@ fun ApplicationBriefCard(
 @PhonePreview
 @Composable
 private fun Preview() {
-    val app = ApplicationRepository().getAll()[1]
-    ApplicationBriefCard(app = app, onClick =  { })
+    /*val app =
+    ApplicationBriefCard(app = app, onClick =  { })*/
 }
 

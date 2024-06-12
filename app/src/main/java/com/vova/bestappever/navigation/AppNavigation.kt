@@ -19,6 +19,7 @@ import com.vova.bestappever.screens.authorization.AuthorizationScreen
 import com.vova.bestappever.screens.authorization.AuthorizationViewModel
 import com.vova.bestappever.screens.profile.ProfileScreen
 import com.vova.bestappever.screens.profile.ProfileViewModel
+import java.util.Date
 
 @Composable
 fun AppNavigation(
@@ -36,11 +37,10 @@ fun AppNavigation(
             val state by viewModel.state.collectAsState()
 
             viewModel.setTitle("Аварийные заявки")
-            viewModel.setCriticalityForDisplay(listOf(DefectCriticality.MAJOR))
+            viewModel.setCriticalityForDisplay(DefectCriticality.MAJOR)
 
             NotAcceptedAppsScreen(
                 state = state,
-                onAppCanceled = viewModel::onAppCanceled,
                 onAppAccepted = viewModel::onAppAccepted
             )
         }
@@ -50,11 +50,10 @@ fun AppNavigation(
             val state by viewModel.state.collectAsState()
 
             viewModel.setTitle("Штатные заявки")
-            viewModel.setCriticalityForDisplay(listOf(DefectCriticality.MINOR))
+            viewModel.setCriticalityForDisplay(DefectCriticality.MINOR)
 
             NotAcceptedAppsScreen(
                 state = state,
-                onAppCanceled = viewModel::onAppCanceled,
                 onAppAccepted = viewModel::onAppAccepted
             )
         }
@@ -81,7 +80,7 @@ fun AppNavigation(
                 }
             }
             ProfileScreen(
-                viewModel.user,
+                viewModel.state.collectAsState().value,
                 viewModel::onLogout
             )
         }
@@ -97,7 +96,10 @@ fun AppNavigation(
                 }
             }
             AuthorizationScreen(
-                onLoginClick = viewModel::onLoginClick
+                state = viewModel.state.collectAsState().value,
+                onLoginClick = viewModel::onLoginClick,
+                onPasswordChanged = viewModel::onPasswordChange,
+                onEmailChanged = viewModel::onEmailChange
             )
         }
     }

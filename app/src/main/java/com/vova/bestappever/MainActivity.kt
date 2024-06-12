@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.vova.bestappever.data.models.User
 import com.vova.bestappever.navigation.AppNavigation
 import com.vova.bestappever.screens.bottom_navigation.BottomNavigationBar
+import com.vova.bestappever.services.Authorization
 import com.vova.bestappever.ui.theme.BestAppEverTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var user: User
+    lateinit var auth: Authorization
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
                         BottomNavigationBar(navController)
                     }
                 ) { innerPadding ->
-                    AppNavigation(navController, innerPadding, user.id == -1)
+                    AppNavigation(navController, innerPadding, auth.isAuthorizationRequire())
                 }
             }
         }

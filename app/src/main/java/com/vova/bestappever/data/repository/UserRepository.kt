@@ -1,9 +1,12 @@
 package com.vova.bestappever.data.repository
 
 import com.vova.bestappever.data.models.User
+import com.vova.bestappever.data.remote.AppApi
 
-class UserRepository {
-    private val data = listOf(
+class UserRepository(
+    private  val appApi: AppApi
+) {
+    private val dataTest = listOf(
         User(
             id = 1,
             fio = "Зубенко Михаил Петрович",
@@ -17,7 +20,7 @@ class UserRepository {
         )
     )
 
-    fun get(id: Int): User {
-        return data.first { user -> user.id == id }
+    suspend fun get(id: Int): User {
+        return appApi.getUser(id)[0]
     }
 }

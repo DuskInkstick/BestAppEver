@@ -34,9 +34,10 @@ import com.vova.bestappever.screens.utils.PhonePreview
 
 @Composable
 fun ProfileScreen(
-    user: User,
+    state: ProfileState,
     onLogout: () -> Unit
 ) {
+    val user = state.user
     Column(
         modifier = Modifier.padding(8.dp)
     ) {
@@ -139,8 +140,6 @@ private fun TextWithIcon(
 @PhonePreview
 @Composable
 private fun Preview() {
-    ProfileScreen(user = UserRepository().get(1)) {
 
-    }
 }
 

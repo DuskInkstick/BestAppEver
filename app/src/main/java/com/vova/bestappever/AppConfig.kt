@@ -1,27 +1,52 @@
 package com.vova.bestappever
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.vova.bestappever.data.models.User
 
 class AppConfig(
     private val applicationContext: Context
 ) {
     private val prefsName = "appConfig"
-    private val userKey = "userKey"
+    private val userIdKey = "userIdKey"
+    private val userEmailKey = "userEmailKey"
+    private val tokenKey = "tokenKey"
 
     private val sp = applicationContext.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
 
-    fun getCurrentUserId(): Int? {
-        val userId = sp.getInt(userKey, -1)
+    fun getUserId(): Int? {
+        val userId = sp.getInt(userIdKey, -1)
 
         return if(userId == -1) null else userId
     }
 
-    fun setCurrentUserId(id: Int) {
+    fun setUserId(id: Int) {
         sp.edit {
-            putInt(userKey, id)
+            putInt(userIdKey, id)
+            apply()
+        }
+    }
+
+    fun getUserEmail(): String? {
+        val userEmail = sp.getString(userEmailKey, "")
+
+        return if(userEmail == "") null else userEmail
+    }
+
+    fun setUserEmail(email: String) {
+        sp.edit {
+            putString(userEmailKey, email)
+            apply()
+        }
+    }
+
+    fun getToken(): String? {
+        val res = sp.getString(tokenKey, "")
+        return if(res == "") null else res
+    }
+
+    fun setToken(token: String) {
+        sp.edit {
+            putString(tokenKey, token)
             apply()
         }
     }

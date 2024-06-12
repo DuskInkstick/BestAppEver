@@ -1,5 +1,6 @@
 package com.vova.bestappever.screens.authorization
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -31,12 +33,11 @@ import com.vova.bestappever.screens.utils.PhonePreview
 
 @Composable
 fun AuthorizationScreen(
-    onLoginClick: (email: String, password: String) -> Unit
+    state: AuthorizationState,
+    onLoginClick: () -> Unit,
+    onPasswordChanged: (password: String) -> Unit,
+    onEmailChanged: (email: String) -> Unit,
 ) {
-    var email by rememberSaveable { mutableStateOf("") }
-
-    var password by rememberSaveable { mutableStateOf("") }
-
     var passwordVisibility by remember { mutableStateOf(false) }
 
     val showPasswordIcon: ImageVector = if (passwordVisibility) {
@@ -57,14 +58,16 @@ fun AuthorizationScreen(
             Spacer(modifier = Modifier.padding(16.dp))
 
             OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text(text = "Email") }
+                value = state.email,
+                onValueChange = { onEmailChanged(it) },
+                label = { Text(text = "Email") },
+                isError = state.isError
             )
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = state.password,
+                onValueChange = { onPasswordChanged(it) },
                 label = { Text(text = "Пароль") },
+                isError = state.isError,
                 visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
                     IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
@@ -77,8 +80,11 @@ fun AuthorizationScreen(
             )
 
             Spacer(modifier = Modifier.padding(16.dp))
-            Button(onClick = { onLoginClick(email, password) }) {
+            Button(onClick = onLoginClick) {
                 Text(text = "Войти")
+            }
+            if(state.isError) {
+                Toast.makeText(LocalContext.current, state.errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -87,5 +93,5 @@ fun AuthorizationScreen(
 @PhonePreview
 @Composable
 private fun Preview() {
-    AuthorizationScreen { _, _ ->}
+
 }
